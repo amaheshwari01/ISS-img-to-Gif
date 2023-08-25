@@ -4,6 +4,7 @@ from flask import Flask, request, redirect, send_file, url_for
 from werkzeug.utils import secure_filename
 import shutil
 import imageio.v2 as imageio
+from waitress import serve
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './uploads'
@@ -73,4 +74,6 @@ def show_path(path):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
+
+    # serve(app, host='0.0.0.0', port=5000)
