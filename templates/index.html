@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<!-- BOILERPLATE -->
+
+<head>
+    <meta charset="UTF-8">
+    <title>Download Gif from Zip</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <h1>Convert Data to Gif</h1>
+    <h4>Instructions:</h4>
+    <ol>
+        <li>Download your teams data as a .zip from the files tab in teams</li>
+        <li>Upload the .zip file below</li>
+        <li>Download the .gif file(right-click save)</li>
+    </ol>
+    <h5>NOTE: It takes a couple seconds to generate the gif - pls dont spam the submit button</h5>
+
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" multiple />
+        <input type="submit" />
+    </form>
+
+</body>
+
+</html>
