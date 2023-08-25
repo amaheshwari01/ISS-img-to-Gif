@@ -22,16 +22,19 @@ def move_jpg_files(source_folder, destination_folder):
                 # print(f"Moved {source_path} to {destination_path}")
 
 
-def generate_images(img_dir):
-    dir_list = sorted(os.listdir(img_dir))
+def generate_images(dirpath):
+    dir_list = sorted(os.listdir(dirpath +"/imgout"))
     images = []
 
 
     for filename in dir_list:
-        images.append(imageio.imread(img_dir+"/"+filename))
-
-    imageio.mimsave(img_dir+'/movie.gif', images)
-    return img_dir+'/movie.gif'
+        images.append(imageio.imread(dirpath+"/imgout/"+filename))
+    os.makedirs(dirpath+'/gifout', exist_ok=True)
+    imageio.mimsave(dirpath+'/gifout/movie.gif',
+                    images, format='GIF', duration=5)
+    shutil.rmtree(dirpath+"/imgout")
+    shutil.rmtree(dirpath+"/out")
+    return dirpath+'/gifout/movie.gif'
 
 @app.route('/', methods=['GET'])
 def upload_form():
@@ -67,8 +70,9 @@ def show_path(path):
         shutil.unpack_archive('./'+path, './'+dir_path+'/out')
         os.makedirs('./'+dir_path+'/imgout', exist_ok=True)
         move_jpg_files('./'+dir_path+'/out', './'+dir_path+'/imgout')
+        os.remove('./'+path)
         # return redirect(url_for('success', file=generate_images('./'+dir_path+'/imgout')))
-        return send_file(generate_images('./'+dir_path+'/imgout'), as_attachment=False)
+        return send_file(generate_images(dir_path), as_attachment=False)
     except Exception as e:
         return "Error: " + str(e) +"""
         <br>
